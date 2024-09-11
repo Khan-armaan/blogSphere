@@ -1,10 +1,10 @@
-import { SigninInput } from '@armaankhan0/common'
+
 import { SignupInput } from '@armaankhan0/common'
 import axios from 'axios'
-import { ChangeEvent, ChangeEventHandler, useState } from 'react'
+import { ChangeEvent,  useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { BACKEND_URL } from '../config'
-import { Signup } from '../pages/Signup'
+
 // trpc on tyoe a
 export const Auth = ({type}: {type: "signup" | "signin"}) => {
  const [postInputs, setPostInputs] = useState<SignupInput>({ //signininput is just a subset if singup

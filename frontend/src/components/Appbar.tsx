@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { Avatar } from "./BlogCard"
-import { Blog } from "../pages/Blog"
+
 import { useUser } from "../hooks"
 
 export const Appbar = () => {

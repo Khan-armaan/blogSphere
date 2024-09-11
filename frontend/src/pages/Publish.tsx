@@ -2,11 +2,9 @@ import axios from "axios"
 import { Appbar } from "../components/Appbar"
 import { BACKEND_URL } from "../config"
 import { ChangeEvent, useState } from "react"
-import { Navigate, useNavigate } from "react-router-dom"
+import {  useNavigate } from "react-router-dom"
 
-interface DecodedToken {
-    id: string; // Adjust this based on the structure of your token
-}
+
 export const Publish = () => {
     const [title, setTitle] = useState("")
     const [description , setDescription] = useState("")

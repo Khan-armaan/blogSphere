@@ -37,10 +37,14 @@ export const  Blogs = () => {
         <div className=''>
             {blogs.map((blog) => (
 
-                    <BlogCard  id={blog.id}  authorName={blog.author.name || "Anonymous"}
-                    title={blog.title }
-                    content={blog.content}
-                    />
+<BlogCard
+id={blog.id}
+authorName={blog.author.name || "Anonymous"}
+title={blog.title}
+content={blog.content}
+publishedDate={blog.publishedDate || "Unknown"} // Add this line
+/>
+
             ))}
           
                 

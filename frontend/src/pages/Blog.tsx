@@ -1,9 +1,9 @@
-import { BlogCard } from "../components/BlogCard"
+
 import { FullBlog } from "../components/FullBlog"
 import { useBlog } from "../hooks"
 import { useParams } from "react-router-dom" // to get parameter dynamically
-import { Appbar } from "../components/Appbar"
-import { Skeleton } from "../components/Skeleton"
+
+
 import { Spinner } from "../components/Spinner"
 import { Delete } from "../components/Delete"
 
@@ -28,7 +28,7 @@ export const Blog = () => {
     return(
         <>
         
-    <FullBlog blog={blog}/>
+        {blog ? <FullBlog blog={blog} /> : <div>Loading...</div>}
  <div className="flex justify-center mt-9"><Delete  id={`${id}`}/> </div>    
         </>
     )
