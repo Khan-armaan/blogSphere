@@ -1,0 +1,6 @@
+name = "backend"
+compatibility_date = "2024-08-26"
+# here the backend server will connect to the connectiuon pool url 
+[vars]
+DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiZjYwMGU3MjAtOWFjYi00NDZkLWE2MjEtNzdmNzAwYjQ5YThjIiwidGVuYW50X2lkIjoiZGQwNTc1YzU1NDA4ZGJiNmQ3YjMzY2ZjYTIxODUwZDg4NjEzMzg3YTBlMWRhNThmM2Y2MTY3ZDM1N2E0ZDgxZCIsImludGVybmFsX3NlY3JldCI6IjU3NWY1YzVjLTM5MmEtNGJhZS04NjE2LTgxNGQxNDgwZWI1NCJ9.dFDMHB004fVZ-p8MLyoz7x4_Sfq3GUZIkvPD-A7y1Bs"
+JWT_SECRET = "mysecret"
