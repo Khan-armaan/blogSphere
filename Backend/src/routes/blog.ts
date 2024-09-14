@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Hono } from "hono";
-import { useSyncExternalStore } from "hono/jsx";
 import { decode, jwt, sign, verify } from 'hono/jwt'
 
  
@@ -147,7 +146,8 @@ blogRouter.get('/:id',async (c) => { // to get a blog never use body in a GET re
         createdAt: true,
         author: {
           select: {
-            name: true
+            name: true,
+            id: true
           }
         }
       }
@@ -192,5 +192,28 @@ blogRouter.delete('/delete/:id', async (c) => {
     return c.json({
       message: "Error while deleting the blog post"
     });
+  }
+});
+
+
+
+blogRouter.get('/userposts', async (c) => {
+  const autherId = c.get("userId")
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env?.DATABASE_URL
+  }).$extends(withAccelerate())
+  try{
+  const posts = await prisma.post.findMany({
+    where:{
+      authorId: autherId
+    },
+   
+  })
+  return c.json(posts)
+  }catch(e){
+c.status(400)
+return c.json({
+  message: "Error while returning the posts "
+})
   }
 });

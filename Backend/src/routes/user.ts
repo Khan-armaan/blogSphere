@@ -69,8 +69,8 @@ userRouter.post('/signup', async(c) => {  // crating a new client for every api 
     return c.json(jwt)
   })
 
-  userRouter.get('/me', async (c) => {
-    const token = c.req.header('Authorization')
+  userRouter.get('/me', async (c) => { 
+    const token = c.req.header('Authorization') 
     if (!token) {
         c.status(401);
         return c.json({ error: "Authorization token missing" });
@@ -89,6 +89,7 @@ userRouter.post('/signup', async(c) => {  // crating a new client for every api 
                 id: Id,
             },
             select: {
+              id: true,
                 name: true,
                 email: true,
                 posts: true
@@ -106,4 +107,46 @@ userRouter.post('/signup', async(c) => {  // crating a new client for every api 
         return c.json({ error: "Invalid token" });
     }
 });
+userRouter.get('/userposts', async(c) => {
+  const token = c.req.header("authorization");
+  if (!token){
+    c.status(401)
+    return c.json({
+      message: 'Invalid authorizaion'
+    })
+  }
+ 
+  try {
+    const payload = await verify(token, c.env.JWT_SECRET);
+    const Id = payload.id as string ;
+
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env?.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    const user = await prisma.user.findFirst({
+        where: {
+            id: Id,
+        },
+        select: {
+            posts: {
+              select:{
+                title: true,
+                id:true
+              }
+            }
+        },
+    });
+
+    if (!user) {
+        c.status(404);
+        return c.json({ error: "User not found" });
+    }
+
+    return c.json(user);
+} catch (e) {
+    c.status(401);
+    return c.json({ error: "Invalid token" });
+}
+})
 
