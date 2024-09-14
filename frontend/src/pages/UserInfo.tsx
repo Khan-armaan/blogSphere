@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
 import { Spinner } from "../components/Spinner";
 import { useUser } from "../hooks";
 
 export const UserInfo = () => {
   const { user, loading } = useUser();
+ 
 
   if (loading) {
     return (
@@ -29,9 +31,12 @@ export const UserInfo = () => {
             User Information
           </div>
           <div className="text-xl font-semibold space-y-3">
-            <div>Name: {user.name}</div>
+            <div>Name:  {user.name}</div>
             <div>Email: {user.email}</div>
-            <div>Posts:{user.post}</div>
+            <div>Posts: {user.posts.length}</div>
+         <Link to={'/UserPosts'}> <button type="button" className="mt-5 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4
+             focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2
+             dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Posts</button></Link>  
           </div>
         </div>
       </div>

@@ -51,7 +51,7 @@ async function sendRequst(){
                     email: e.target.value
                    } )     
                 }}/>
-                      <LabelledInput label='Password' type={'password'} placeholder='*********' onChange={(e) => {
+                      <LabelledInput label='Password' type={'password'} placeholder='greater than 6 digits' onChange={(e) => {
                    setPostInputs({
                     ...postInputs, // retain existing username and password 
                     password: e.target.value

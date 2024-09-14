@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { BACKEND_URL } from "../config"
+import { BACKEND_URL, } from "../config"
 
 export interface Blog {
   publishedDate: string
@@ -9,15 +9,18 @@ export interface Blog {
   id: string,
   author: {
     name: string,
+    id: string
     
   }
   createdAt: string
 }
 export interface User{
+  id: string,
   email: string,
   name: string,
-  post: number
+  posts: Array<string>[]
 }
+
 export const useBlog = ({id }: {id: string} ) => {
   const [loading, setLoading] = useState(true)
   const [blog, setBlog] = useState<Blog>()
@@ -74,3 +77,66 @@ export const useUser = () => {
   }, [])
 return{loading,user}
 }
+export const useUserPost = () => {
+  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState([])
+
+  useEffect(() => {
+    axios.get(`${BACKEND_URL}/api/v1/user/userposts`, {
+      headers: {
+        Authorization : localStorage.getItem("token")
+      }
+    }).then(respone => {
+      setUser(respone.data)
+      setLoading(false)
+    })
+  },[])
+ 
+  return{ loading, user }
+}
+
+
+
+interface Post {
+  id: string;
+  title: string;
+}
+
+interface UserPosts {
+  posts: Post[]; // `posts` is an array inside this object
+}
+
+interface FetchResult {
+  data: UserPosts | null; // Now `data` is a single object, not an array
+  loading: boolean;
+  error: string | null;
+}
+
+export const useFetchUserPosts = (token: string | null): FetchResult => {
+  const [data, setData] = useState<UserPosts | null>(null); // Single object, not an array
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get<UserPosts>(`${BACKEND_URL}/api/v1/user/userposts`, {
+          headers: {
+            Authorization: `${token}`, // Ensure Bearer token is used
+          },
+        });
+        setData(response.data); // Store the single `UserPosts` object
+      } catch (err: any) {
+        setError(err.response?.data?.error || err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (token) {
+      fetchData();
+    }
+  }, [token]);
+
+  return { data, loading, error };
+};

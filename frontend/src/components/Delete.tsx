@@ -3,10 +3,13 @@ import { BACKEND_URL } from "../config"
 import { useNavigate } from "react-router-dom"
 
 
-export const Delete = ({id}: {id : string}) => {
 
+export const Delete = ({id}: {id : string}) => {
+    
+    
     const navigate = useNavigate()
     return(
+        
         <div>
             <button onClick={() => {
                 axios.delete(`${BACKEND_URL}/api/v1/blog/delete/${id}`,{ // since this request also goes through the middleware hence need the token of authorization to be send with the delete request

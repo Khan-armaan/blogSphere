@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom" // to get parameter dynamically
 
 
 import { Spinner } from "../components/Spinner"
-import { Delete } from "../components/Delete"
+
 
 
 export const Blog = () => {
@@ -29,7 +29,7 @@ export const Blog = () => {
         <>
         
         {blog ? <FullBlog blog={blog} /> : <div>Loading...</div>}
- <div className="flex justify-center mt-9"><Delete  id={`${id}`}/> </div>    
+
         </>
     )
 } 
