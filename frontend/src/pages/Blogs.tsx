@@ -1,57 +1,49 @@
-import { Appbar } from "../components/Appbar"
-import { BlogCard } from "../components/BlogCard"
-import { Skeleton } from "../components/Skeleton"
-import { useBlogs } from "../hooks/index"
-export const  Blogs = () => {
-    const {loading, blogs} = useBlogs()
-    
+import { Appbar } from "../components/Appbar";
+import { BlogCard } from "../components/BlogCard";
+import { Skeleton } from "../components/Skeleton";
+import { useBlogs } from "../hooks/index";
 
-   
+export const Blogs = () => {
+  const { loading, blogs } = useBlogs();
 
-
-    if(loading){
-        return<div >
-         <Appbar />
-     <div className="flex justify-center me-7">
-        <div>
-     <Skeleton/>
-      <Skeleton/>
-      <Skeleton/>
-      <Skeleton/>
-      <Skeleton/>
-      <Skeleton/>
-      <Skeleton/>
-      <Skeleton/>
-      <Skeleton/></div> 
-      </div>
-      
-        </div>
-
-
-
-    }
+  if (loading) {
     return (
-    <div>
+      <div>
         <Appbar />
-    <div className="flex justify-center"> 
-        <div className=''>
-            {blogs.map((blog) => (
+        <div className="flex justify-center me-7">
+          <div>
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-<BlogCard
-id={blog.id}
-authorName={blog.author.name || "Anonymous"}
-title={blog.title}
-content={blog.content}
-publishedDate={blog.publishedDate || "Unknown"} // Add this line
-/>
-
-            ))}
-          
-                
-                
-            
+  return (
+    <div>
+      <Appbar />
+      <div className="flex justify-center">
+        <div className="">
+          {blogs.map((blog) => (
+            <BlogCard
+              key={blog.id}
+              id={blog.id}
+              authorName={blog.author.name || "Anonymous"}
+              title={blog.title}
+              content={blog.content}
+              publishedDate={blog.createdAt || "Unknown"} // Use 'createdAt' for the published date
+            />
+          ))}
         </div>
-        </div>
-        </div>
-    )
-}
+      </div>
+    </div>
+  );
+};

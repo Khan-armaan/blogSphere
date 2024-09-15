@@ -2,13 +2,22 @@ import { useState } from 'react';
 import { useFetchUserPosts } from '../hooks';
 import axios from 'axios';
 import { BACKEND_URL } from '../config';
+import { Spinner } from '../components/Spinner';
+import { Appbar } from '../components/Appbar';
 
 const UserPostsComponent = () => {
   const token = localStorage.getItem("token");
   const { data, loading, error } = useFetchUserPosts(token);
   const [isDeleting, setIsDeleting] = useState<string | null>(null); // Handle loading state for delete
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="flex justify-center h-screen flex-col">
+        <div className="flex justify-center">
+          <Spinner />
+        </div>
+      </div>
+    );
   if (error) return <p>Error: {error}</p>;
 
   // Check if data is available and is an object with posts array
@@ -35,24 +44,32 @@ const UserPostsComponent = () => {
   };
 
   return (
-    <div className="flex justify-center flex-col">
-      <div className="flex justify-center">
-        <div>
-          <h1 className="text-3xl font-bold mt-16 mb-10">User Posts</h1>
-          {data.posts.map((post) => (
-            <div key={post.id} className="flex items-center text-xl font-semibold">
-              <p> * {post.title}</p>
-              <button
-                className={`ml-4 px-2 py-1 text-sm text-white ${
-                  isDeleting === post.id ? "bg-gray-400" : "bg-red-500"
-                } rounded`}
-                onClick={() => deletePost(post.id)} // Corrected to use post.id
-                disabled={isDeleting === post.id} // Disable button while deleting
-              >
-                {isDeleting === post.id ? "Deleting..." : "Delete"}
-              </button>
-            </div>
-          ))}
+    <div>
+      <Appbar />
+      <div className="flex justify-center flex-col">
+        <div className="flex justify-center">
+          <div className="border-2 shadow-md rounded-lg mt-8 px-6">
+            <h1 className="text-3xl font-bold mt-5 pb-6 text-center">User Posts</h1>
+
+            {data.posts.map((post) => (
+              <div key={post.id} className="grid grid-cols-12 gap-4 items-center text-xl font-semibold pb-4">
+                <div className="col-span-10">
+                  <p>* {post.title}</p>
+                </div>
+                <div className="col-span-2 flex justify-end">
+                  <button
+                    className={`px-4 py-2 text-sm text-white ${
+                      isDeleting === post.id ? "bg-gray-400" : "bg-red-500"
+                    } rounded`}
+                    onClick={() => deletePost(post.id)}
+                    disabled={isDeleting === post.id}
+                  >
+                    {isDeleting === post.id ? "Deleting..." : "Delete"}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

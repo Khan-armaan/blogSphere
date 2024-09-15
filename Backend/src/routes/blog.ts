@@ -104,30 +104,33 @@ blogRouter.put('/', async(c) =>  { // to update the title and athe description
 
   })
     // pagination ie first 10 blogs bulk is before
-blogRouter.get('/bulk', async(c) => {
- 
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL
-  }).$extends(withAccelerate())
-
-  const post = await prisma.post.findMany({
-    select: {  // select will tell us which all things will the backend return to us
-      content: true,
-      title: true,
-      id: true,
-      createdAt: true,
-   
-      author: {
+    blogRouter.get('/bulk', async (c) => {
+      const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+      }).$extends(withAccelerate());
+    
+      const post = await prisma.post.findMany({
         select: {
-          name: true
-        }
-      }
-    }
-  })
-   return c.json({
-    post
-   })
-  })   
+          content: true,
+          title: true,
+          id: true,
+          createdAt: true,
+          author: {
+            select: {
+              name: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: 'desc', // Sort by 'createdAt' in descending order
+        },
+      });
+    
+      return c.json({
+        post,
+      });
+    });
+     
           
 blogRouter.get('/:id',async (c) => { // to get a blog never use body in a GET request
   const id =  c.req.param("id")

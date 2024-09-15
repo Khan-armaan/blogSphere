@@ -42,25 +42,32 @@ export const useBlog = ({id }: {id: string} ) => {
 }
 
 export const useBlogs = () => {
-    const [loading, setLoading] = useState(true)
-    const [blogs, setBlogs] = useState<Blog[]>([])
-    useEffect(() =>  {  // you cannot use async await syntax inside the use effect functional parameter so you ave to use .then syntax
+  const [loading, setLoading] = useState(true);
+  const [blogs, setBlogs] = useState<Blog[]>([]);
 
-        axios.get(`${BACKEND_URL}/api/v1/blog/bulk`, {
-          headers:{
-            Authorization: localStorage.getItem("token")
-          }
-        })
-         .then((response) => {
-            setBlogs(response.data.post) // data base have blogs as posts not blogs since blogs is te response that is coming back
-            setLoading(false)
-         })
-    }, [])
-    return(
-  {  loading,
-    blogs}
-)
-}
+  useEffect(() => {
+    axios
+      .get(`${BACKEND_URL}/api/v1/blog/bulk`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        // Sort blogs by createdAt in descending order on the frontend, if not sorted on the backend
+        const sortedBlogs = response.data.post.sort(
+          (a: Blog , b: Blog) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        setBlogs(sortedBlogs);
+        setLoading(false);
+      });
+  }, []);
+
+  return {
+    loading,
+    blogs,
+  };
+};
+
 export const useUser = () => {  
   const [loading , setLoading] = useState(true)
   const [user, setUser ] = useState<User>()
